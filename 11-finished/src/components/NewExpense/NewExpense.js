@@ -2,10 +2,14 @@ import ExpenseForm from "./ExpenseForm";
 
 import "./NewExpense.css";
 
-const NewExpense = () => {
+const NewExpense = ({ onAddExpense }) => {
+	const submitExpenseHandler = (data) => {
+		onAddExpense({ ...data });
+	};
+
 	return (
 		<div className="new-expense">
-			<ExpenseForm />
+			<ExpenseForm onSubmitExpense={submitExpenseHandler} />
 		</div>
 	);
 };
