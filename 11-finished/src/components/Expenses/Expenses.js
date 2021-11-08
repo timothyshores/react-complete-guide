@@ -6,16 +6,19 @@ import Card from "../UI/Card";
 import "./Expenses.css";
 
 const Expenses = ({ items }) => {
-	const [expenses, setItems] = useState(items);
+	const [year, setYear] = useState("2021");
+	const [expenses, setExpenses] = useState(items);
 
 	const handleFilterByYear = (year) => {
 		console.log("Expenses.js filterByYear", year);
+		setYear(year);
+		// setExpenses(expenses.filter((expense) => expense.date.year === year));
 	};
 
 	return (
 		<div>
-			<ExpensesFilter onFilterByYear={handleFilterByYear} />
 			<Card className="expenses">
+				<ExpensesFilter onFilterByYear={handleFilterByYear} year={year} />
 				<ExpenseItem
 					title={expenses[0].title}
 					amount={expenses[0].amount}
