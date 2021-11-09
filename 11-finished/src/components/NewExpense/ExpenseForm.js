@@ -9,6 +9,8 @@ const ExpenseForm = ({ onSubmitExpense }) => {
 		date: "",
 	});
 
+	const [hideInputFields, toggleHideInputField] = useState(true);
+
 	const titleChangeHandler = (e) => {
 		setUserInput((prevState) => {
 			return {
@@ -52,36 +54,59 @@ const ExpenseForm = ({ onSubmitExpense }) => {
 
 	const { title, amount, date } = userInput;
 
+	const handleAddExpense = (e) => {
+		if (Object.values(userInput).every((value) => value === "")) {
+			e.preventDefault();
+			toggleHideInputField((prevState) => !prevState);
+		} else {
+			submitHandler(e);
+		}
+	};
+
+	const handleCancel = (e) => {
+		e.preventDefault();
+		toggleHideInputField((prevState) => !prevState);
+	};
+
 	return (
 		<form onSubmit={submitHandler}>
-			<div className="new-expense__controls">
-				<div className="new-expense__control">
-					<label>Title</label>
-					<input type="text" value={title} onChange={titleChangeHandler} />
+			{!hideInputFields && (
+				<div className="new-expense__controls">
+					<div className="new-expense__control">
+						<label>Title</label>
+						<input type="text" value={title} onChange={titleChangeHandler} />
+					</div>
+					<div className="new-expense__control">
+						<label>Amount</label>
+						<input
+							type="number"
+							value={amount}
+							min="0.01"
+							step="0.01"
+							onChange={amountChangeHandler}
+						/>
+					</div>
+					<div className="new-expense__control">
+						<label>Date</label>
+						<input
+							type="date"
+							value={date}
+							min="2019-01-01"
+							max="2031-12-31"
+							onChange={dateChangeHandler}
+						/>
+					</div>
 				</div>
-				<div className="new-expense__control">
-					<label>Amount</label>
-					<input
-						type="number"
-						value={amount}
-						min="0.01"
-						step="0.01"
-						onChange={amountChangeHandler}
-					/>
-				</div>
-				<div className="new-expense__control">
-					<label>Date</label>
-					<input
-						type="date"
-						value={date}
-						min="2019-01-01"
-						max="2031-12-31"
-						onChange={dateChangeHandler}
-					/>
-				</div>
-			</div>
+			)}
 			<div className="new-expense__actions">
-				<button type="submit">Add Expense</button>
+				{!hideInputFields && (
+					<button type="submit" onClick={handleCancel}>
+						Cancel
+					</button>
+				)}
+				<button type="submit" onClick={handleAddExpense}>
+					Add {hideInputFields && "New"} Expense
+				</button>
 			</div>
 		</form>
 	);
