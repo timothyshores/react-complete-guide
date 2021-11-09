@@ -7,21 +7,16 @@ import "./Expenses.css";
 
 const Expenses = ({ items }) => {
 	const [year, setYear] = useState("2021");
-	const [expenses, setExpenses] = useState(items);
-
-	const handleFilterByYear = (year) => {
-		console.log("Expenses.js filterByYear", year);
-		setYear(year);
-		// setExpenses(expenses.filter((expense) => expense.date.year === year));
-	};
 
 	return (
 		<div>
 			<Card className="expenses">
-				<ExpensesFilter onFilterByYear={handleFilterByYear} year={year} />
-				{expenses.map(({ title, amount, date }) => (
-					<ExpenseItem title={title} amount={amount} date={date} />
-				))}
+				<ExpensesFilter onFilterByYear={(year) => setYear(year)} year={year} />
+				{items
+					.filter(({ date }) => date.getFullYear().toString() === year)
+					.map(({ title, amount, date, id }) => (
+						<ExpenseItem key={id} title={title} amount={amount} date={date} />
+					))}
 			</Card>
 		</div>
 	);
