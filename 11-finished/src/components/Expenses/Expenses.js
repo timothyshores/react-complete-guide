@@ -16,13 +16,11 @@ const Expenses = ({ items }) => {
 		<div>
 			<Card className="expenses">
 				<ExpensesFilter onFilterByYear={(year) => setYear(year)} year={year} />
-				{filteredExpenses.length === 0 ? (
-					<p>No expenses found</p>
-				) : (
+				{filteredExpenses.length === 0 && <p>No expenses found</p>}
+				{filteredExpenses.length > 0 &&
 					filteredExpenses.map(({ title, amount, date, id }) => (
 						<ExpenseItem key={id} title={title} amount={amount} date={date} />
-					))
-				)}
+					))}
 			</Card>
 		</div>
 	);
